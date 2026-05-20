@@ -52,7 +52,7 @@ create table product (
 	product_id int auto_increment primary key,
 	category varchar(50) not null,
 	name varchar(50) not null,
-	price decimal(10,2) check (price > 0) default 0.00 not null,
+	price decimal(10,2) check (price > 0) default 0.01 not null,
 	stock int check (stock >= 0) default 0 not null,
 	img varchar(1024) default null,
 	description text default null
