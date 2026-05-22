@@ -31,6 +31,14 @@ Frontend
 -npm install
 -npm run dev
 
+Cada uno en su pc debe descargar dbgin y dbeaver. El primero sirve para crear la base de datos alojada en el server
+la segunda sirve para poder manipular los datos.
+
+dbgin: https://dbngin.com/download
+
+
+dbeaver: https://dbeaver.io/download/
+
 
 😘 CÓDIGO DE LA DB:
 
