@@ -7,9 +7,10 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        playfair: ['Playfair Display', 'serif'],
+        'nuni': ['Nunito', 'sans-serif'],
+        'paris-i': ['PlayfairDisplay-Italic', 'sans-serif'],
+        'paris-r': ['PlayfairDisplay-Regular', 'sans-serif'],
       },
     },
   },
-  plugins: [],
 }
