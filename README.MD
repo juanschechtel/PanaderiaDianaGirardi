@@ -94,6 +94,8 @@ create table event (
 create table breakfast_product (
 	breakfast_id int not null,
 	product_id int not null,
+	quantity int check (quantity > 0) not null default 1,
+	primary key (breakfast_id, product_id),
 	foreign key (breakfast_id) references breakfast(breakfast_id),
 	foreign key (product_id) references product(product_id)
 );
@@ -101,6 +103,8 @@ create table breakfast_product (
 create table event_product (
 	event_id int not null,
 	product_id int not null,
+	quantity int check (quantity > 0) not null default 1,
+	primary key (event_id, product_id),
 	foreign key (event_id) references event(event_id),
 	foreign key (product_id) references product(product_id)
 );
@@ -108,6 +112,8 @@ create table event_product (
 create table orders_product (
 	order_id int not null,
 	product_id int not null,
+	quantity int check (quantity > 0) not null default 1,
+	primary key (order_id, product_id),
 	foreign key (order_id) references orders(order_id),
 	foreign key (product_id) references product(product_id)
 );
