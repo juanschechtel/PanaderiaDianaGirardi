@@ -2,15 +2,16 @@
 export default {
   content: [
     "./index.html",
-    "./src/**/*.{js,html}"
+    "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
       fontFamily: {
-        'nuni': ['Nunito', 'sans-serif'],
-        'paris-i': ['PlayfairDisplay-Italic', 'sans-serif'],
-        'paris-r': ['PlayfairDisplay-Regular', 'sans-serif'],
+        'nunito': ['Nunito', 'sans-serif'],
+        'playfair': ['PlayfairDisplay-Regular', 'serif'],
+        'playfair-italic': ['PlayfairDisplay-Italic', 'serif'],
       },
     },
   },
+  plugins: [],
 }
