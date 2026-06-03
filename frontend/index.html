@@ -1,92 +1,13 @@
-<!DOCTYPE html>
-<html class="m-0 p-0 h-full" lang="es">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Panadería</title>
-  <link rel="stylesheet" href="/src/css/styles.css">
-</head>
-
-<body class="relative m-0 p-0 h-full">
-  <div
-    class="absolute inset-0 bg-[url('https://proingra.com/wp-content/uploads/2025/07/03-JUL-PORTADA.jpg')] bg-cover bg-center filter filter blur-sm ">
-  </div>
-  <!-------- BARRA DE NAVEGACION -------->
-  <nav class="relative font-playfair bg-bg-transparent w-full shadow-sm p-4 flex justify-between items-center gap-8">
-    <div class="flex-col font-bold text-xl text-amber-600">
-      <h3 class="flex justify-center font-nunito">Girardi</h3>
-      <h4 class="flex justify-center font-playfair-italic text-sm">Patisserie</h4>
-    </div>
-    <div class="flex gap-8">
-      <a href="#Catalogo" class="hover:text-amber-600 font-semibold text-gray-700 transition-colors">Catalogo</a>
-      <a href="#Desayunos" class="hover:text-amber-600 font-semibold text-gray-700 transition-colors">Desayunos</a>
-      <a href="#Eventos" class="hover:text-amber-600 font-semibold text-gray-700 transition-colors">Eventos</a>
-      <a href="#Nosotros" class="hover:text-amber-600 font-semibold text-gray-700 transition-colors">Nosotros</a>
-      <a href="#Contacto" class="hover:text-amber-600 font-semibold text-gray-700 transition-colors">Contactanos</a>
-    </div>
-    <div class="flex gap-8">
-      <!-------- BOTON DE LOGIN -------->
-      <button
-  onclick="openLogin()"
-  class="hover:text-amber-600 font-semibold text-gray-700 transition-colors">
-  Login
-</button>
-      <a href="#Register" class="hover:text-amber-600 font-semibold text-gray-700 transition-colors">Register</a>
-    </div>
-  </nav>
-  <!-------- TITULO DE LA PAGINA -------->
-  <div class="w-[20%] relative font-playfair-italic text-[20px] text-left mt-80">
-    <h1>
-      Panaderia Girardi -
-    </h1>
-  </div>
-  <!-------- PIE DE PAGINA -------->
-  <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 p-4">
-    <p class="text-white text-center">© 2026 Panadería Girardi. Todos los derechos reservados.</p>
-  </div>
-  <!-------- MODAL DE LOGIN -------->
-  <div 
-  id="Login"
-  class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50"> 
-<div class="bg-red-300 p-10 w-[500px]">
-  <p class="font-playfair-italic mb-2">
-    Girardi Patisserie
-  </p>
-    <h1 class="text-4xl font-playfair-italic mb-6">
-      Bienvenido
-    </h1>
-    <input
-      type="email"
-      placeholder="Email"
-      class="w-full border font-playfair-italic mb-4 p-3">
-    <input
-      type="password"
-      placeholder="Password"
-      class="w-full border font-playfair-italic mb-4 p-3">
-    <button class="bg-black text-white font-playfair-italic w-full p-3">
-      Ingresar
-    </button>
-    <p class="flex justify-center font-playfair-italic ">
-      No tienes una cuenta?
-    </p>
-    <button onclick="openRegister()" class="bg-transparent text-white font-playfair-italic w-full p-1">
-      Registrate gratis
-    </button>
-  </div>
-</div>
-
-<script>
-  <!-------- FUNCION DE OPEN LOGIN -------->
-  function openLogin() {
-    document
-      .getElementById("Login")
-      .classList.remove("hidden")
-    document
-      .getElementById("Login")
-      .classList.add("flex")
-  }
-</script>
-</body>
-
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>frontend</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>
