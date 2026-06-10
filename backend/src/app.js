@@ -1,8 +1,13 @@
 import express from 'express';
-import showProducts from './Controllers/productController.js';
+import { register } from './Controllers/authController.js'
+import getUsers from './Controllers/userControllers.js';
 
 const app = express();
 
-app.get("/", showProducts);
+app.use(express.json())
+
+app.get("/", getUsers);
+
+app.post("/register", register)
 
 export default app;
