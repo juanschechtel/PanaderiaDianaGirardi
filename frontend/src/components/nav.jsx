@@ -1,3 +1,4 @@
+import Login from "./login"
 const navLinkClass =
   'rounded-lg px-4 py-2 text-sm font-medium text-stone-700 transition hover:bg-amber-100 hover:text-amber-900'
 
@@ -13,6 +14,7 @@ export default function Nav() {
       <a href="/Reservas" className={navLinkClass}>
         Reservas
       </a>
+      <Login/>
     </nav>
   )
 }
