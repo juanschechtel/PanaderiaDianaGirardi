@@ -32,7 +32,7 @@ export default function Login() {
   // 5. Lo que se muestra en pantalla
   return (
     <div>
-      <h2>Iniciar sesión</h2>
+      <h2 style={{color: 'gray'}}>Iniciar sesión</h2>
 
       <input
         placeholder="Email"

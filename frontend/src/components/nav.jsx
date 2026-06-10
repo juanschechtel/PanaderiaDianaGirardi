@@ -3,11 +3,8 @@ import Login from "./login";
 
 const navLinkClass =
   "rounded-lg px-4 py-2 text-sm font-medium text-stone-700 transition hover:bg-amber-100 hover:text-amber-900";
-<<<<<<< HEAD
-=======
 
 
->>>>>>> e2fbb510ad569c7807fbc59d2065ac466f5adc0a
 
 export default function Nav() {
   const [mostrarLogin, setMostrarLogin] = useState(false);
