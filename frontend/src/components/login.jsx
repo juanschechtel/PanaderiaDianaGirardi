@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+const buttonStyles = 'text-stone-900 hover:bg-rose-100'
+
 export default function Login() {
 
   // 1. Guardamos lo que escribe el usuario
@@ -45,7 +47,7 @@ export default function Login() {
         onChange={e => setPassword(e.target.value)}
       />
 
-      <button onClick={handleLogin}>
+      <button className={buttonStyles} onClick={handleLogin}>
         Entrar
       </button>
     </div>
