@@ -1,12 +1,14 @@
-// components/FormSection.jsx
-import FormField from "./FormField";
+import FormField from './FormField'
 
 export default function FormSection({ section, values, errors, onChange }) {
   return (
-    <div className="form-section">
-      {section.label && <p className="section-label">{section.label}</p>}
-      
-      <div className="form-grid">
+    <div className="flex flex-col gap-3">
+      {section.label && (
+        <p className="text-xs font-semibold uppercase tracking-wider text-gray-400">
+          {section.label}
+        </p>
+      )}
+      <div className="grid grid-cols-2 gap-3">
         {section.fields.map(field => (
           <FormField
             key={field.id}
@@ -18,5 +20,5 @@ export default function FormSection({ section, values, errors, onChange }) {
         ))}
       </div>
     </div>
-  );
+  )
 }

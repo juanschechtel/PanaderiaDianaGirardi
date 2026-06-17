@@ -1,60 +1,46 @@
-import { useState } from "react";
-import Login from "./login";
-
-const navLinkClass =
-  "rounded-lg px-4 py-2 text-sm font-medium text-stone-700 transition hover:bg-amber-100 hover:text-amber-900";
-
-
+import { useState } from 'react'
+import AuthModal from './AuthModal'
 
 export default function Nav() {
-  const [mostrarLogin, setMostrarLogin] = useState(false);
+  const [modal, setModal] = useState({ open: false, mode: 'login' })
+
+  const openModal = (mode) => setModal({ open: true, mode })
+  const closeModal = () => setModal(prev => ({ ...prev, open: false }))
 
   return (
     <>
-      <nav className="flex items-center justify-center gap-2 border-b border-stone-200 bg-white px-6 py-4 shadow-sm">
-        <a href="/Inicio" className={navLinkClass}>
-          Inicio
-        </a>
+      <nav className="w-full bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+        <span className="text-lg font-semibold text-amber-800 tracking-tight">
+          Panadería Diana Girardi
+        </span>
 
-        <a href="/Productos" className={navLinkClass}>
-          Productos
-        </a>
+        <div className="hidden md:flex items-center gap-6 text-sm text-gray-600">
+          <a href="#" className="hover:text-amber-800 transition-colors">Inicio</a>
+          <a href="#" className="hover:text-amber-800 transition-colors">Productos</a>
+          <a href="#" className="hover:text-amber-800 transition-colors">Nosotros</a>
+        </div>
 
-        <a href="/Reservas" className={navLinkClass}>
-          Reservas
-        </a>
-
-        <div className="flex gap-8">
-          {/* BOTÓN DE LOGIN */}
+        <div className="flex items-center gap-2">
           <button
-            onClick={() => setMostrarLogin(true)}
-            className="hover:text-amber-600 font-semibold text-gray-700 transition-colors"
+            onClick={() => openModal('login')}
+            className="text-sm text-gray-700 hover:text-amber-800 font-medium px-4 py-2 rounded-lg hover:bg-amber-50 transition-colors"
           >
-            Login
+            Ingresar
+          </button>
+          <button
+            onClick={() => openModal('register')}
+            className="text-sm bg-amber-700 hover:bg-amber-800 text-white font-medium px-4 py-2 rounded-lg transition-colors"
+          >
+            Registrarse
           </button>
         </div>
       </nav>
 
-      {mostrarLogin && (
-        <div
-          className="fixed inset-0 bg-black/50 flex items-center justify-center"
-          onClick={() => setMostrarLogin(false)}
-        >
-          <div
-            className="bg-white p-6 rounded-lg shadow-lg"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              onClick={() => setMostrarLogin(false)}
-              className="mb-4"
-            >
-              ✕
-            </button>
-
-            <Login />
-          </div>
-        </div>
-      )}
+      <AuthModal
+        isOpen={modal.open}
+        onClose={closeModal}
+        mode={modal.mode}
+      />
     </>
-  );
+  )
 }
