@@ -9,7 +9,7 @@ export const register = async (req, res) => {
         //Verifica si está registrado el mail
         const userExists = await findUserByEmail(email);
         if (userExists) {
-            return req.status(400).json({ message: "El email ya está registrado." })
+            return res.status(400).json({ message: "El email ya está registrado." })
         }
 
         //Encripta la contraseña
@@ -19,11 +19,11 @@ export const register = async (req, res) => {
         //Llama a la funcion createUser
         await createUser(first_name, last_name, email, tel, hashedPassword);
 
-        req.status(201).json({ message: "Usuario registrado con éxito en MySQL. " });
+        res.status(201).json({ message: "Usuario registrado con éxito en MySQL. " });
 
     }
     catch (error) {
         console.error("Error en el registro: ", error.message);
-        req.status(500).json({ error: "Error interno del servidor." });
+        res.status(500).json({ error: "Error interno del servidor." });
     }
 }
