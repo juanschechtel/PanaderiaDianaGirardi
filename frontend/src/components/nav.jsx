@@ -15,9 +15,10 @@ export default function Nav() {
         </span>
 
         <div className="hidden md:flex items-center gap-6 text-sm text-gray-600">
-          <a href="#" className="hover:text-amber-800 transition-colors">Inicio</a>
-          <a href="#" className="hover:text-amber-800 transition-colors">Productos</a>
-          <a href="#" className="hover:text-amber-800 transition-colors">Nosotros</a>
+          <a href="#inicio" className="hover:text-amber-800 transition-colors">Inicio</a>
+          <a href="#productos" className="hover:text-amber-800 transition-colors">Productos</a>
+          <a href="#nosotros" className="hover:text-amber-800 transition-colors">Nosotros</a>
+          <a href="#reservas" className="hover:text-amber-800 transition-colors">Reservas</a>
         </div>
 
         <div className="flex items-center gap-2">
