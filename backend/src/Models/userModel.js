@@ -2,7 +2,7 @@ import pool from "../config/db.js";
 
 export const getUsersWithIdGreaterThan = async (minId) => {
 
-    const query = "SELECT * FROM breakfast";
+    const query = "SELECT * FROM users";
 
     const [rows] = await pool.query(query, [minId]);
 
