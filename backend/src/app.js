@@ -1,10 +1,13 @@
 import express from 'express';
+import cors from 'cors';
 import { register } from './Controllers/authController.js'
 import getUsers from './Controllers/userControllers.js';
 
 const app = express();
 
-app.use(express.json())
+app.use(cors());
+
+app.use(express.json());
 
 app.get("/", getUsers);
 
