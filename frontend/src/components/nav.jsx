@@ -9,7 +9,7 @@ export default function Nav() {
 
   return (
     <>
-      <nav className="w-full bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+      <nav className="w-full h-full bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
         <span className="text-lg font-semibold text-amber-800 tracking-tight">
           Panadería Diana Girardi
         </span>
