@@ -7,11 +7,11 @@ export const loginSchema = z.object({
 })
 
 export const registerSchema = z.object({
-  nombre:    z.string().min(1, 'El nombre es requerido'),
-  apellido:  z.string().min(1, 'El apellido es requerido'),
-  email:     z.string().min(1, 'El email es requerido').email('Email inválido'),
-  telefono:  z.string().min(10, 'Teléfono inválido'),
-  password:  z.string().min(6, 'Mínimo 6 caracteres'),
+  nombre: z.string().min(1, 'El nombre es requerido'),
+  apellido: z.string().min(1, 'El apellido es requerido'),
+  email: z.string().min(1, 'El email es requerido').email('Email inválido'),
+  telefono: z.string().min(10, 'Teléfono inválido'),
+  password: z.string().min(6, 'Mínimo 6 caracteres'),
   confirmar: z.string().min(1, 'Confirmá la contraseña'),
 }).refine(d => d.password === d.confirmar, {
   message: 'Las contraseñas no coinciden',
@@ -26,8 +26,8 @@ export const loginConfig = {
   sections: [
     {
       fields: [
-        { id: 'email',    label: 'Correo electrónico', type: 'email',    placeholder: 'nombre@correo.com', required: true },
-        { id: 'password', label: 'Contraseña',         type: 'password', placeholder: '••••••••',         required: true },
+        { id: 'email', label: 'Correo electrónico', type: 'email', placeholder: 'nombre@correo.com', required: true },
+        { id: 'password', label: 'Contraseña', type: 'password', placeholder: '••••••••', required: true },
       ]
     }
   ]
@@ -40,12 +40,12 @@ export const registerConfig = {
   sections: [
     {
       fields: [
-        { id: 'nombre',    label: 'Nombre',               type: 'text',     placeholder: 'Tu nombre',          required: true },
-        { id: 'apellido',  label: 'Apellido',             type: 'text',     placeholder: 'Tu apellido',        required: true },
-        { id: 'email',     label: 'Correo electrónico',   type: 'email',    placeholder: 'nombre@correo.com',  required: true },
-        { id: 'telefono',  label: 'Teléfono',             type: 'tel',      placeholder: '+54 9 11 1234-5678', required: true },
-        { id: 'password',  label: 'Contraseña',           type: 'password', placeholder: '••••••••',           required: true },
-        { id: 'confirmar', label: 'Confirmar contraseña', type: 'password', placeholder: '••••••••',           required: true },
+        { id: 'nombre', label: 'Nombre', type: 'text', placeholder: 'Tu nombre', required: true },
+        { id: 'apellido', label: 'Apellido', type: 'text', placeholder: 'Tu apellido', required: true },
+        { id: 'email', label: 'Correo electrónico', type: 'email', placeholder: 'nombre@correo.com', required: true },
+        { id: 'telefono', label: 'Teléfono', type: 'tel', placeholder: '2983123456', required: true },
+        { id: 'password', label: 'Contraseña', type: 'password', placeholder: '••••••••', required: true },
+        { id: 'confirmar', label: 'Confirmar contraseña', type: 'password', placeholder: '••••••••', required: true },
       ]
     }
   ]

@@ -12,15 +12,15 @@ export default function AuthModal({ isOpen, onClose, mode = 'login' }) {
 
   const handleSubmit = async (values) => {
     setServerError('')
-  
+
     const body = {
       first_name: values.nombre,
-      last_name: '',
+      last_name: values.apellido,
       email: values.email,
-      tel: '',
+      tel: values.telefono,
       password: values.password,
     }
-  
+
     try {
       const res = await fetch('http://localhost:3000/register', {
         method: 'POST',
@@ -29,7 +29,7 @@ export default function AuthModal({ isOpen, onClose, mode = 'login' }) {
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.message || 'Error al procesar')
-  
+
       if (mode === 'login') {
         localStorage.setItem('token', data.token)
         localStorage.setItem('usuario', JSON.stringify(data.usuario))

@@ -43,9 +43,9 @@ dbeaver: https://dbeaver.io/download/
 😘 CÓDIGO DE LA DB:
 
 create database Girardi;
-
 use Girardi;
 
+-- 2. Creación de tablas base
 create table users (
 	id INT auto_increment primary key,
 	first_name varchar(50) not null,
@@ -53,7 +53,7 @@ create table users (
 	email varchar(100) unique not null,
 	tel varchar(10) check (tel regexp '^[0-9]{10}$') not null,
 	password varchar(255) not null,
-	usertype enum ('admin', 'client', 'provider') not null
+	usertype enum ('admin', 'client', 'provider') default 'client'
 );
 
 create table product (
@@ -66,6 +66,7 @@ create table product (
 	description text default null
 );
 
+-- 3. Creación de tablas con dependencias (FK a users)
 create table breakfast (
 	breakfast_id int auto_increment primary key,
 	total_price decimal(10,2) check (total_price > 0) not null,
@@ -99,6 +100,7 @@ create table event (
 	foreign key (users_id) references users(id)
 );
 
+-- 4. Creación de tablas intermedias (FK a entidades y productos)
 create table breakfast_product (
 	breakfast_id int not null,
 	product_id int not null,
@@ -125,3 +127,43 @@ create table orders_product (
 	foreign key (order_id) references orders(order_id),
 	foreign key (product_id) references product(product_id)
 );
+
+show tables;
+
+-- Primero los usuarios (Nacen con IDs: 1, 2, 3, 4)
+insert into users(first_name, last_name, email, tel, password, usertype) values 
+('Juan', 'Schechtel', 'juanpabloschechtel@gmail.com', '2915341322', 'juan123', 'admin'),
+('Joshue', 'Ardiles', 'Ardilesgabriel10@gmail.com', '2915741695', 'riverteamo', 'client'),
+('Tomas', 'Dumrauf', 'Dumrauftomas3003@gmail.com', '2915228880', 'bestyonelas', 'provider'),
+('Marcos', 'Salazar', 'marcosdsalazar39@gmail.com', '2983503368', 'marcos1', 'client');
+
+-- Segundo los productos (Nacen con IDs: 1, 2, 3, 4)
+insert into product (category, name, price, stock, img, description) values 
+('panificado', 'croassaint', 3000.00, 3, 'https://upload.wikimedia.org/wikipedia/commons/2/2a/Croissant-Petr_Kratochvil.jpg', 'Panificado hojaldrado en base de manteca, especialidad de la casa' ),
+('cookie', 'red velvet cookie', 6000.00, 6, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT28SKQ6UDZDTBEpvg_49AKo3Cj89X5aniPvg&s', 'Panificado denso y húmedo en base de cacao sutil y manteca.'),
+('cafeteria', 'Capuccino Grande', 2500.00, 50, null, 'Café espresso con leche vaporizada y espuma de leche.'),
+('salado', 'Tostado de JyQ', 3500.00, 15, null, 'Tostado en pan de miga con manteca.');
+
+-- Tercero los encabezados de pedidos (Ya existen los usuarios 2 y 4)
+insert into breakfast (total_price, status, date_ordered, detail, guests_count, users_id) values 
+(8000.00, 'confirmed', '2026-05-23', 'Desayuno sorpresa', 2, 2); -- Crea breakfast_id = 1
+
+insert into orders (total_price, status, date_ordered, time_ordered, pickup_time, detail, users_id) values 
+(9500.00, 'pending', '2026-05-22', '16:30:00', '17:15:00', 'Retira por el local', 4); -- Crea order_id = 1
+
+insert into event (total_price, delivery_date, detail, event_type, users_id) values 
+(60000.00, '2026-06-15', 'Mesa dulce empresarial', 'Corporativo', 4); -- Crea event_id = 1
+
+-- Cuarto y último: Las relaciones intermedias (Ya existen los productos y los pedidos)
+insert into breakfast_product (breakfast_id, product_id, quantity) values 
+(1, 1, 1), 
+(1, 3, 2); 
+
+insert into orders_product (order_id, product_id, quantity) values 
+(1, 2, 1), 
+(1, 4, 1); 
+
+insert into event_product (event_id, product_id, quantity) values 
+(1, 1, 10), 
+(1, 2, 5);
+
