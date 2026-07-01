@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import DynamicForm from './DynamicForm'
 import { loginConfig, registerConfig } from '../configs/formConfig'
 
@@ -7,11 +7,20 @@ const endpoints = { login: '/api/auth/login', register: '/api/auth/register' }
 
 export default function AuthModal({ isOpen, onClose, mode = 'login' }) {
   const [serverError, setServerError] = useState('')
+  const [serverSuccess, setServerSuccess] = useState('')
+
+  useEffect(() => {
+    if (isOpen) {
+      setServerError('')
+      setServerSuccess('')
+    }
+  }, [isOpen, mode])
 
   if (!isOpen) return null
 
   const handleSubmit = async (values) => {
     setServerError('')
+    setServerSuccess('')
 
     const body = {
       first_name: values.nombre,
@@ -33,8 +42,12 @@ export default function AuthModal({ isOpen, onClose, mode = 'login' }) {
       if (mode === 'login') {
         localStorage.setItem('token', data.token)
         localStorage.setItem('usuario', JSON.stringify(data.usuario))
+        onClose()
+        return
       }
-      onClose()
+
+      setServerSuccess('usuario registrado con exito')
+      setTimeout(onClose, 1500)
     } catch (err) {
       setServerError(err.message)
     }
@@ -75,6 +88,13 @@ export default function AuthModal({ isOpen, onClose, mode = 'login' }) {
         {serverError && (
           <div className="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-2.5 rounded-lg">
             {serverError}
+          </div>
+        )}
+
+        {/* Exito servidor */}
+        {serverSuccess && (
+          <div className="bg-green-50 border border-green-200 text-green-700 text-sm px-4 py-2.5 rounded-lg">
+            {serverSuccess}
           </div>
         )}
 
