@@ -1,7 +1,7 @@
 export default function Productos() {
   return (
     <main
-      id="inicio"
+      id="productos"
       className="relative w-screen h-screen overflow-hidden flex items-center justify-center"
     >
       {/* Imagen de fondo */}

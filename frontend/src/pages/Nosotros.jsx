@@ -1,7 +1,7 @@
 export default function Nosotros() {
   return (
     <main 
-      id="inicio"
+      id="nosotros"
       className="relative w-screen h-screen overflow-hidden flex flex-col items-center justify-center"
     >
     <div className="absolute inset-0 bg-[url('/imagenes/torta1.jpeg')] bg-cover bg-[center_40%] blur-xs"> 
