@@ -1,24 +1,44 @@
 import { z } from 'zod'
 
-// ── Schemas ──────────────────────────────────────────────
+const nameSchema = (fieldName) =>
+  z.string()
+    .trim()
+    .min(2, `${fieldName} debe tener al menos 2 caracteres`)
+    .max(40, `${fieldName} no puede superar los 40 caracteres`)
+    .regex(/^[\p{L}\s'-]+$/u, `${fieldName} solo puede contener letras`)
+
+const emailSchema = z.string()
+  .trim()
+  .min(1, 'El email es requerido')
+  .max(254, 'El email es demasiado largo')
+  .email('Email inválido')
+
+const passwordSchema = z.string()
+  .min(8, 'La contraseña debe tener al menos 8 caracteres')
+  .max(72, 'La contraseña no puede superar los 72 caracteres')
+  .regex(/[a-z]/, 'La contraseña debe incluir una minúscula')
+  .regex(/[A-Z]/, 'La contraseña debe incluir una mayúscula')
+  .regex(/\d/, 'La contraseña debe incluir un número')
+
 export const loginSchema = z.object({
-  email: z.string().min(1, 'El email es requerido').email('Email inválido'),
-  password: z.string().min(6, 'Mínimo 6 caracteres'),
+  email: emailSchema,
+  password: z.string().min(1, 'La contraseña es requerida'),
 })
 
 export const registerSchema = z.object({
-  nombre: z.string().min(1, 'El nombre es requerido'),
-  apellido: z.string().min(1, 'El apellido es requerido'),
-  email: z.string().min(1, 'El email es requerido').email('Email inválido'),
-  telefono: z.string().min(10, 'Teléfono inválido'),
-  password: z.string().min(6, 'Mínimo 6 caracteres'),
+  nombre: nameSchema('El nombre'),
+  apellido: nameSchema('El apellido'),
+  email: emailSchema,
+  telefono: z.string()
+    .trim()
+    .regex(/^\d{10,15}$/, 'El teléfono debe tener entre 10 y 15 números'),
+  password: passwordSchema,
   confirmar: z.string().min(1, 'Confirmá la contraseña'),
-}).refine(d => d.password === d.confirmar, {
+}).refine(data => data.password === data.confirmar, {
   message: 'Las contraseñas no coinciden',
   path: ['confirmar'],
 })
 
-// ── Configs ───────────────────────────────────────────────
 export const loginConfig = {
   title: 'Iniciar sesión',
   submitLabel: 'Ingresar',
@@ -28,9 +48,9 @@ export const loginConfig = {
       fields: [
         { id: 'email', label: 'Correo electrónico', type: 'email', placeholder: 'nombre@correo.com', required: true },
         { id: 'password', label: 'Contraseña', type: 'password', placeholder: '••••••••', required: true },
-      ]
-    }
-  ]
+      ],
+    },
+  ],
 }
 
 export const registerConfig = {
@@ -46,7 +66,7 @@ export const registerConfig = {
         { id: 'telefono', label: 'Teléfono', type: 'tel', placeholder: '2983123456', required: true },
         { id: 'password', label: 'Contraseña', type: 'password', placeholder: '••••••••', required: true },
         { id: 'confirmar', label: 'Confirmar contraseña', type: 'password', placeholder: '••••••••', required: true },
-      ]
-    }
-  ]
+      ],
+    },
+  ],
 }

@@ -1,20 +1,18 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import DynamicForm from './DynamicForm'
 import { loginConfig, registerConfig } from '../configs/formConfig'
 
 const configs = { login: loginConfig, register: registerConfig }
-const endpoints = { login: '/api/auth/login', register: '/api/auth/register' }
 
 export default function AuthModal({ isOpen, onClose, mode = 'login' }) {
   const [serverError, setServerError] = useState('')
   const [serverSuccess, setServerSuccess] = useState('')
 
-  useEffect(() => {
-    if (isOpen) {
-      setServerError('')
-      setServerSuccess('')
-    }
-  }, [isOpen, mode])
+  const handleClose = () => {
+    setServerError('')
+    setServerSuccess('')
+    onClose()
+  }
 
   if (!isOpen) return null
 
@@ -42,12 +40,12 @@ export default function AuthModal({ isOpen, onClose, mode = 'login' }) {
       if (mode === 'login') {
         localStorage.setItem('token', data.token)
         localStorage.setItem('usuario', JSON.stringify(data.usuario))
-        onClose()
+        handleClose()
         return
       }
 
       setServerSuccess('usuario registrado con exito')
-      setTimeout(onClose, 1500)
+      setTimeout(handleClose, 1500)
     } catch (err) {
       setServerError(err.message)
     }
@@ -56,7 +54,7 @@ export default function AuthModal({ isOpen, onClose, mode = 'login' }) {
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
-      onClick={(e) => e.target === e.currentTarget && onClose()}
+      onClick={(e) => e.target === e.currentTarget && handleClose()}
     >
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 p-6 flex flex-col gap-4">
 
@@ -71,7 +69,7 @@ export default function AuthModal({ isOpen, onClose, mode = 'login' }) {
             </p>
           </div>
           <button
-            onClick={onClose}
+            onClick={handleClose}
             className="text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors p-1.5 rounded-full"
             aria-label="Cerrar"
           >

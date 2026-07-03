@@ -1,32 +1,43 @@
-export default function FormField({ field, value, error, onChange }) {
+export default function FormField({ field, register, error }) {
+  const errorId = `${field.id}-error`
+  const commonProps = {
+    id: field.id,
+    'aria-invalid': Boolean(error),
+    'aria-describedby': error ? errorId : undefined,
+    ...register(field.id),
+  }
+
   return (
     <div
       className="flex flex-col gap-1"
       style={{ gridColumn: field.span === 2 ? '1 / -1' : 'auto' }}
     >
-      <label className="text-sm font-medium text-gray-700">
+      <label className="text-sm font-medium text-gray-700" htmlFor={field.id}>
         {field.label}
         {field.required && <span className="text-red-400 ml-0.5">*</span>}
       </label>
 
       {field.type === 'select' && (
         <select
-          value={value || ''}
-          onChange={e => onChange(field.id, e.target.value)}
+          {...commonProps}
+          defaultValue=""
           className={`border rounded-lg px-3 py-2 text-sm outline-none transition-colors
             focus:border-amber-500 focus:ring-1 focus:ring-amber-500
             ${error ? 'border-red-400' : 'border-gray-300'}`}
         >
           <option value="">Seleccionar...</option>
-          {field.options.map(o => <option key={o}>{o}</option>)}
+          {field.options.map(option => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
         </select>
       )}
 
       {field.type === 'textarea' && (
         <textarea
+          {...commonProps}
           placeholder={field.placeholder}
-          value={value || ''}
-          onChange={e => onChange(field.id, e.target.value)}
           className={`border rounded-lg px-3 py-2 text-sm outline-none transition-colors resize-none h-24
             focus:border-amber-500 focus:ring-1 focus:ring-amber-500
             ${error ? 'border-red-400' : 'border-gray-300'}`}
@@ -35,17 +46,20 @@ export default function FormField({ field, value, error, onChange }) {
 
       {!['select', 'textarea'].includes(field.type) && (
         <input
+          {...commonProps}
           type={field.type}
           placeholder={field.placeholder}
-          value={value || ''}
-          onChange={e => onChange(field.id, e.target.value)}
           className={`border rounded-lg px-3 py-2 text-sm outline-none transition-colors
             focus:border-amber-500 focus:ring-1 focus:ring-amber-500
             ${error ? 'border-red-400' : 'border-gray-300'}`}
         />
       )}
 
-      {error && <span className="text-xs text-red-500">{error}</span>}
+      {error && (
+        <span id={errorId} className="text-xs text-red-500">
+          {error}
+        </span>
+      )}
     </div>
   )
 }

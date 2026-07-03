@@ -12,7 +12,7 @@ export default function Login() {
   const handleLogin = async () => {
 
     // 3. Le mandamos los datos al backend
-    const respuesta = await fetch('/api/auth/login', {
+    const respuesta = await fetch('/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })

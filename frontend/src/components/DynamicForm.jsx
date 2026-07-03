@@ -1,38 +1,35 @@
-import { useState } from 'react'
+import { useEffect, useMemo } from 'react'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 import FormField from './FormField'
 
-// DynamicForm: arma el form a partir de una config.
-// Ya no usa FormSection como archivo aparte — las secciones
-// se recorren directo acá adentro, así todo el flujo
-// (estado → validación → render) se lee en un solo lugar.
-
 export default function DynamicForm({ config, onSubmit }) {
-  const [values, setValues] = useState({})
-  const [errors, setErrors] = useState({})
+  const defaultValues = useMemo(() => {
+    return config.sections
+      .flatMap(section => section.fields)
+      .reduce((values, field) => ({ ...values, [field.id]: '' }), {})
+  }, [config])
 
-  const handleChange = (id, value) => {
-    setValues(prev => ({ ...prev, [id]: value }))
-    setErrors(prev => { const e = { ...prev }; delete e[id]; return e })
-  }
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    resolver: zodResolver(config.schema),
+    defaultValues,
+    mode: 'onChange',
+    reValidateMode: 'onChange',
+  })
 
-  const handleSubmit = () => {
-    const result = config.schema.safeParse(values)
-    if (!result.success) {
-      const newErrors = {}
-      result.error.errors.forEach(err => {
-        if (!newErrors[err.path[0]]) newErrors[err.path[0]] = err.message
-      })
-      return setErrors(newErrors)
-    }
-    onSubmit(result.data)
-  }
+  useEffect(() => {
+    reset(defaultValues)
+  }, [defaultValues, reset])
 
   return (
-    <div className="flex flex-col gap-4">
+    <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)} noValidate>
       <h2 className="text-xl font-semibold text-gray-900">{config.title}</h2>
 
-      {/* Antes: <FormSection> por cada sección.
-          Ahora: el mismo recorrido, sin archivo aparte. */}
       {config.sections.map((section, i) => (
         <div key={i} className="flex flex-col gap-3">
           {section.label && (
@@ -45,9 +42,8 @@ export default function DynamicForm({ config, onSubmit }) {
               <FormField
                 key={field.id}
                 field={field}
-                value={values[field.id]}
-                error={errors[field.id]}
-                onChange={handleChange}
+                register={register}
+                error={errors[field.id]?.message}
               />
             ))}
           </div>
@@ -55,11 +51,12 @@ export default function DynamicForm({ config, onSubmit }) {
       ))}
 
       <button
-        onClick={handleSubmit}
-        className="w-full bg-amber-700 hover:bg-amber-800 text-white font-medium py-2.5 rounded-lg transition-colors text-sm mt-2"
+        type="submit"
+        disabled={isSubmitting}
+        className="w-full bg-amber-700 hover:bg-amber-800 disabled:bg-amber-300 disabled:cursor-not-allowed text-white font-medium py-2.5 rounded-lg transition-colors text-sm mt-2"
       >
         {config.submitLabel}
       </button>
-    </div>
+    </form>
   )
 }
