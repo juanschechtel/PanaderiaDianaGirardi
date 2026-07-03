@@ -1,11 +1,23 @@
 import { useState } from 'react'
 import AuthModal from './AuthModal'
 
+const getStoredUser = () => {
+  const storedUser = localStorage.getItem('usuario')
+  return storedUser ? JSON.parse(storedUser) : null
+}
+
 export default function Nav() {
   const [modal, setModal] = useState({ open: false, mode: 'login' })
+  const [user, setUser] = useState(getStoredUser)
 
   const openModal = (mode) => setModal({ open: true, mode })
   const closeModal = () => setModal(prev => ({ ...prev, open: false }))
+
+  const handleLogout = () => {
+    localStorage.removeItem('token')
+    localStorage.removeItem('usuario')
+    setUser(null)
+  }
 
   return (
     <>
@@ -22,18 +34,34 @@ export default function Nav() {
         </div>
 
         <div className="flex items-center gap-2">
-          <button
-            onClick={() => openModal('login')}
-            className="text-sm text-gray-700 hover:text-amber-800 font-medium px-4 py-2 rounded-lg hover:bg-amber-50 transition-colors"
-          >
-            Ingresar
-          </button>
-          <button
-            onClick={() => openModal('register')}
-            className="text-sm bg-amber-700 hover:bg-amber-800 text-white font-medium px-4 py-2 rounded-lg transition-colors"
-          >
-            Registrarse
-          </button>
+          {user ? (
+            <>
+              <span className="text-sm font-medium text-gray-700">
+                Hola, {user.first_name}
+              </span>
+              <button
+                onClick={handleLogout}
+                className="text-sm text-gray-700 hover:text-amber-800 font-medium px-4 py-2 rounded-lg hover:bg-amber-50 transition-colors"
+              >
+                Salir
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                onClick={() => openModal('login')}
+                className="text-sm text-gray-700 hover:text-amber-800 font-medium px-4 py-2 rounded-lg hover:bg-amber-50 transition-colors"
+              >
+                Ingresar
+              </button>
+              <button
+                onClick={() => openModal('register')}
+                className="text-sm bg-amber-700 hover:bg-amber-800 text-white font-medium px-4 py-2 rounded-lg transition-colors"
+              >
+                Registrarse
+              </button>
+            </>
+          )}
         </div>
       </nav>
 
@@ -41,6 +69,7 @@ export default function Nav() {
         isOpen={modal.open}
         onClose={closeModal}
         mode={modal.mode}
+        onAuthSuccess={setUser}
       />
     </>
   )

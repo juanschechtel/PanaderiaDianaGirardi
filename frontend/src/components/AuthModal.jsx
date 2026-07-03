@@ -4,7 +4,7 @@ import { loginConfig, registerConfig } from '../configs/formConfig'
 
 const configs = { login: loginConfig, register: registerConfig }
 
-export default function AuthModal({ isOpen, onClose, mode = 'login' }) {
+export default function AuthModal({ isOpen, onClose, mode = 'login', onAuthSuccess }) {
   const [serverError, setServerError] = useState('')
   const [serverSuccess, setServerSuccess] = useState('')
 
@@ -20,16 +20,21 @@ export default function AuthModal({ isOpen, onClose, mode = 'login' }) {
     setServerError('')
     setServerSuccess('')
 
-    const body = {
-      first_name: values.nombre,
-      last_name: values.apellido,
-      email: values.email,
-      tel: values.telefono,
-      password: values.password,
-    }
+    const body = mode === 'login'
+      ? {
+          email: values.email,
+          password: values.password,
+        }
+      : {
+          first_name: values.nombre,
+          last_name: values.apellido,
+          email: values.email,
+          tel: values.telefono,
+          password: values.password,
+        }
 
     try {
-      const res = await fetch('http://localhost:3000/register', {
+      const res = await fetch(`http://localhost:3000/${mode === 'login' ? 'login' : 'register'}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
@@ -37,15 +42,16 @@ export default function AuthModal({ isOpen, onClose, mode = 'login' }) {
       const data = await res.json()
       if (!res.ok) throw new Error(data.message || 'Error al procesar')
 
-      if (mode === 'login') {
-        localStorage.setItem('token', data.token)
-        localStorage.setItem('usuario', JSON.stringify(data.usuario))
-        handleClose()
-        return
-      }
+      localStorage.setItem('token', data.token)
+      localStorage.setItem('usuario', JSON.stringify(data.usuario))
+      onAuthSuccess(data.usuario)
 
-      setServerSuccess('usuario registrado con exito')
-      setTimeout(handleClose, 1500)
+      if (mode === 'login') {
+        handleClose()
+      } else {
+        setServerSuccess('usuario registrado con exito')
+        setTimeout(handleClose, 1500)
+      }
     } catch (err) {
       setServerError(err.message)
     }
