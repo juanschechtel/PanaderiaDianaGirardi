@@ -27,3 +27,36 @@ export const register = async (req, res) => {
         res.status(500).json({ error: "Error interno del servidor." });
     }
 }
+
+export const login = async (req, res) => {
+    try {
+
+        const { email, userPassword } = req.body;
+
+        const user = await findUserByEmail(email);
+
+        if (!user) {
+            return res.status(400).json({ message: "Usuario o contraseña incorrectos." });
+        }
+
+        const isMatch = await bcrypt.compare(userPassword, user.password);
+
+        if (!isMatch) {
+            return res.status(400).json({ message: "Usuario o contraseña incorrectos." });
+        }
+
+        return res.status(200).json({
+            message: "Login exitoso.",
+            user: {
+                id: user.id,
+                first_name: user.first_name,
+                email: user.email
+            }
+        });
+
+    }
+    catch (error) {
+        console.error("Error en el login: ", error.message);
+        return res.status(500).json({ error: "Error interno del servidor." });
+    }
+};
