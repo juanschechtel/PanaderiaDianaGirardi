@@ -31,7 +31,7 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
     try {
 
-        const { email, userPassword } = req.body;
+        const { email, password } = req.body;
 
         const user = await findUserByEmail(email);
 
@@ -39,7 +39,7 @@ export const login = async (req, res) => {
             return res.status(400).json({ message: "Usuario o contraseña incorrectos." });
         }
 
-        const isMatch = await bcrypt.compare(userPassword, user.password);
+        const isMatch = await bcrypt.compare(password, user.password);
 
         if (!isMatch) {
             return res.status(400).json({ message: "Usuario o contraseña incorrectos." });
