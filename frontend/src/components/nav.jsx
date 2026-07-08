@@ -27,30 +27,32 @@ export default function Nav() {
     setUser(null)
   }
 
+  const navBtnClass =
+    'text-sm font-medium px-4 py-2 rounded-lg transition-colors min-w-[6.5rem] text-center'
+
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-40 w-full bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
-        <span className="flex items-center gap-2 text-lg font-semibold text-amber-800 tracking-tight">
-          <img src="/favicon.svg" alt="Medialuna" className="h-8 w-8" />
+      <nav className="fixed top-0 left-0 right-0 z-40 w-full bg-white border-b border-gray-200 px-6 py-4 grid grid-cols-3 items-center">
+        <span className="text-lg font-semibold text-amber-800 tracking-tight">
           Panadería Diana Girardi
         </span>
 
-        <div className="hidden md:flex items-center gap-6 text-sm text-gray-600">
+        <div className="hidden md:flex items-center justify-center gap-6 text-sm text-gray-600">
           <a href="#inicio" className="hover:text-amber-800 transition-colors">Inicio</a>
           <a href="#productos" className="hover:text-amber-800 transition-colors">Productos</a>
           <a href="#nosotros" className="hover:text-amber-800 transition-colors">Nosotros</a>
           <a href="#reservas" className="hover:text-amber-800 transition-colors">Reservas</a>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center justify-end gap-2 min-w-[15rem]">
           {user ? (
             <>
-              <span className="text-sm font-medium text-gray-700">
+              <span className="text-sm font-medium text-gray-700 truncate max-w-[8rem]">
                 Hola, {userName}
               </span>
               <button
                 onClick={handleLogout}
-                className="text-sm text-gray-700 hover:text-amber-800 font-medium px-4 py-2 rounded-lg hover:bg-amber-50 transition-colors"
+                className={`${navBtnClass} text-gray-700 hover:text-amber-800 hover:bg-amber-50`}
               >
                 Salir
               </button>
@@ -59,13 +61,13 @@ export default function Nav() {
             <>
               <button
                 onClick={() => openModal('login')}
-                className="text-sm text-gray-700 hover:text-amber-800 font-medium px-4 py-2 rounded-lg hover:bg-amber-50 transition-colors"
+                className={`${navBtnClass} text-gray-700 hover:text-amber-800 hover:bg-amber-50`}
               >
                 Ingresar
               </button>
               <button
                 onClick={() => openModal('register')}
-                className="text-sm bg-amber-700 hover:bg-amber-800 text-white font-medium px-4 py-2 rounded-lg transition-colors"
+                className={`${navBtnClass} text-gray-700 hover:text-amber-800 hover:bg-amber-50`}
               >
                 Registrarse
               </button>
