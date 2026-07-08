@@ -2,7 +2,7 @@ export default function Productos() {
   return (
     <main
       id="productos"
-      className="relative w-screen h-screen overflow-hidden flex items-center justify-center"
+      className="scroll-mt-20 relative w-screen h-screen overflow-hidden flex items-center justify-center"
     >
       {/* Imagen de fondo */}
       <div className="absolute inset-0 bg-[url('/imagenes/torta2.jpeg')] bg-cover bg-[center_60%] blur-xs"></div>

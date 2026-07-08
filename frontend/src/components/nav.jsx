@@ -29,7 +29,7 @@ export default function Nav() {
 
   return (
     <>
-      <nav className="w-full h-full bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+      <nav className="fixed top-0 left-0 right-0 z-40 w-full bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
         <span className="flex items-center gap-2 text-lg font-semibold text-amber-800 tracking-tight">
           <img src="/favicon.svg" alt="Medialuna" className="h-8 w-8" />
           Panadería Diana Girardi
