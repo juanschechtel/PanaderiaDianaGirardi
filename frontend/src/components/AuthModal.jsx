@@ -23,6 +23,7 @@ export default function AuthModal({ isOpen, onClose, mode = 'login', onAuthSucce
     const body = mode === 'login'
       ? {
           email: values.email,
+          userPassword: values.password,
           password: values.password,
         }
       : {
@@ -42,9 +43,16 @@ export default function AuthModal({ isOpen, onClose, mode = 'login', onAuthSucce
       const data = await res.json()
       if (!res.ok) throw new Error(data.message || 'Error al procesar')
 
-      localStorage.setItem('token', data.token)
-      localStorage.setItem('usuario', JSON.stringify(data.usuario))
-      onAuthSuccess(data.usuario)
+      const authenticatedUser = data.usuario || data.user
+
+      if (data.token) {
+        localStorage.setItem('token', data.token)
+      }
+
+      if (authenticatedUser) {
+        localStorage.setItem('usuario', JSON.stringify(authenticatedUser))
+        onAuthSuccess(authenticatedUser)
+      }
 
       if (mode === 'login') {
         handleClose()

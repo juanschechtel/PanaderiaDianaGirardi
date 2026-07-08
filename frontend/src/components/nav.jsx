@@ -3,12 +3,20 @@ import AuthModal from './AuthModal'
 
 const getStoredUser = () => {
   const storedUser = localStorage.getItem('usuario')
-  return storedUser ? JSON.parse(storedUser) : null
+  if (!storedUser) return null
+
+  try {
+    return JSON.parse(storedUser)
+  } catch {
+    localStorage.removeItem('usuario')
+    return null
+  }
 }
 
 export default function Nav() {
   const [modal, setModal] = useState({ open: false, mode: 'login' })
   const [user, setUser] = useState(getStoredUser)
+  const userName = user?.first_name || user?.nombre || user?.username || user?.email
 
   const openModal = (mode) => setModal({ open: true, mode })
   const closeModal = () => setModal(prev => ({ ...prev, open: false }))
@@ -22,7 +30,8 @@ export default function Nav() {
   return (
     <>
       <nav className="w-full h-full bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
-        <span className="text-lg font-semibold text-amber-800 tracking-tight">
+        <span className="flex items-center gap-2 text-lg font-semibold text-amber-800 tracking-tight">
+          <img src="/favicon.svg" alt="Medialuna" className="h-8 w-8" />
           Panadería Diana Girardi
         </span>
 
@@ -37,7 +46,7 @@ export default function Nav() {
           {user ? (
             <>
               <span className="text-sm font-medium text-gray-700">
-                Hola, {user.first_name}
+                Hola, {userName}
               </span>
               <button
                 onClick={handleLogout}
