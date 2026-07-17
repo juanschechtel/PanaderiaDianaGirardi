@@ -28,8 +28,6 @@ export default function DynamicForm({ config, onSubmit }) {
 
   return (
     <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)} noValidate>
-      <h2 className="text-xl font-semibold text-gray-900">{config.title}</h2>
-
       {config.sections.map((section, i) => (
         <div key={i} className="flex flex-col gap-3">
           {section.label && (
@@ -37,7 +35,7 @@ export default function DynamicForm({ config, onSubmit }) {
               {section.label}
             </p>
           )}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             {section.fields.map(field => (
               <FormField
                 key={field.id}

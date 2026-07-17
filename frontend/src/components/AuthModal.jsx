@@ -67,10 +67,10 @@ export default function AuthModal({ isOpen, onClose, mode = 'login', onAuthSucce
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
       onClick={(e) => e.target === e.currentTarget && handleClose()}
     >
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 p-6 flex flex-col gap-4">
+      <div className="flex max-h-[90svh] w-full max-w-md flex-col gap-4 overflow-y-auto rounded-2xl bg-white p-5 shadow-2xl sm:p-6">
 
         {/* Header */}
         <div className="flex justify-between items-start">
