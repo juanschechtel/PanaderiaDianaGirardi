@@ -1,6 +1,6 @@
-import { json } from "express";
 import { findUserByEmail, createUser } from "../Models/userModel.js";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 export const register = async (req, res) => {
     try {
@@ -45,8 +45,18 @@ export const login = async (req, res) => {
             return res.status(400).json({ message: "Usuario o contraseña incorrectos." });
         }
 
+        const payload = {
+            id: user.id,
+            email: user.email,
+            role: user.usertype || "user"
+        }
+
+        const secretKey = process.env.JWT_SECRET || "%%7o3L%qtT5AqGeoQt1ZVkY+iTyG3oe6";
+        const token = jwt.sign(payload, secretKey, { expiresIn: process.env.JWT_EXPIRES_IN });
+
         return res.status(200).json({
             message: "Login exitoso.",
+            token,
             user: {
                 id: user.id,
                 first_name: user.first_name,
