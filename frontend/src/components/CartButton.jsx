@@ -1,13 +1,15 @@
 import { useCart } from "./CartContext"
 
-export default function CartButton() {
+export default function CartButton({
+  className = "text-neutral-700 hover:bg-neutral-100",
+}) {
   const { totalItems, setIsOpen } = useCart()
 
   return (
     <button
       onClick={() => setIsOpen(true)}
       aria-label="Abrir carrito"
-      className="relative flex h-10 w-10 items-center justify-center rounded-full text-neutral-700 transition-colors hover:bg-neutral-100"
+      className={`relative flex h-10 w-10 items-center justify-center rounded-full transition-colors ${className}`}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

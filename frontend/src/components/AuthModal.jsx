@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import DynamicForm from './DynamicForm'
 import { loginConfig, registerConfig } from '../configs/formConfig'
 
@@ -65,10 +65,13 @@ export default function AuthModal({ isOpen, onClose, mode = 'login', onAuthSucce
     }
   }
 
+  const startedOnOverlay = useRef(false)
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
-      onClick={(e) => e.target === e.currentTarget && handleClose()}
+      onMouseDown={(e) => { startedOnOverlay.current = e.target === e.currentTarget }}
+      onClick={(e) => { if (startedOnOverlay.current && e.target === e.currentTarget) handleClose(); startedOnOverlay.current = false }}
     >
       <div className="flex max-h-[90svh] w-full max-w-md flex-col gap-4 overflow-y-auto rounded-2xl bg-white p-5 shadow-2xl sm:p-6">
 
