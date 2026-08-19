@@ -1,23 +1,119 @@
-export default function Productos() {
-  return (
-    <main
-      id="productos"
-      className="scroll-mt-16 sm:scroll-mt-20 relative flex min-h-[100svh] w-full items-center justify-center overflow-hidden px-4 py-24 sm:px-6"
-    >
-      <div
-        className="absolute inset-0 bg-[url('/imagenes/torta2.jpeg')] bg-cover bg-[center_60%] blur-xs"
-        aria-hidden="true"
-      />
-      <div className="absolute inset-0 bg-black/35" aria-hidden="true" />
+import { useState } from "react"
+import ProductCard from "../components/ProductCard"
 
-      <div className="relative z-10 max-w-2xl text-center text-white">
-        <h1 className="text-3xl font-semibold tracking-tight drop-shadow-sm sm:text-4xl md:text-5xl">
-          Productos
-        </h1>
-        <p className="mt-3 text-base text-white/95 sm:mt-4 sm:text-lg md:text-xl">
-          Acá se mostrarán nuestros panes, facturas y más.
-        </p>
-      </div>
-    </main>
+const PRODUCTOS = [
+  {
+    id: 1,
+    categoria: "panes",
+    image: "/imagenes/pan.jpg",
+    badge: "MÁS VENDIDO",
+    title: "Pan de Campo",
+    description: "Masa madre de fermentación lenta, corteza crocante y miga alveolada.",
+    price: 2800,
+  },
+  {
+    id: 2,
+    categoria: "panes",
+    image: "/imagenes/pan.jpg",
+    badge: null,
+    title: "Pan Integral de Semillas",
+    description: "Harina integral, mix de semillas de girasol, chía y sésamo.",
+    price: 3000,
+  },
+  {
+    id: 3,
+    categoria: "facturas",
+    image: "/imagenes/torta1.jpeg",
+    badge: "FAVORITO",
+    title: "Medialunas de Manteca",
+    description: "Docena de medialunas artesanales recién horneadas.",
+    price: 2200,
+  },
+  {
+    id: 4,
+    categoria: "facturas",
+    image: "/imagenes/torta3.jpeg",
+    badge: null,
+    title: "Facturas Mixtas",
+    description: "Docena surtida: vigilantes, cañoncitos y sacramentos.",
+    price: 2400,
+  },
+  {
+    id: 5,
+    categoria: "tortas",
+    image: "/imagenes/torta2.jpeg",
+    badge: "MÁS VENDIDA",
+    title: "Torta de Chocolate Belga",
+    description: "Mousse de chocolate 70% cacao, ganache artesanal y crocante de almendras.",
+    price: 4800,
+  },
+]
+
+const CATEGORIAS = [
+  { id: "panes", label: "Panes" },
+  { id: "facturas", label: "Facturas" },
+  { id: "tortas", label: "Tortas" },
+]
+
+export default function Productos() {
+  const [categoria, setCategoria] = useState("panes")
+
+  const productosFiltrados = PRODUCTOS.filter((p) => p.categoria === categoria)
+
+  const handleOrder = (producto) => {
+    // Acá va la lógica real: WhatsApp, carrito, checkout, etc.
+    console.log("Pedido:", producto.title)
+  }
+
+  return (
+    <>
+      {/* Catálogo */}
+      <section id="productos" className="w-full px-4 py-16 sm:px-6 sm:py-20" style={{ background: '#F5EDD8' }}>
+        <div className="mx-auto max-w-6xl">
+          {/* Título */}
+          <div className="mb-4 text-center">
+            <h2 className="text-3xl font-semibold tracking-tight text-neutral-900">Nuestros productos</h2>
+          </div>
+
+          {/* Tabs de categoría */}
+          <nav className="mb-10 flex flex-wrap justify-center gap-2 sm:gap-3">
+            {CATEGORIAS.map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => setCategoria(cat.id)}
+                className={`rounded-full px-5 py-2 text-sm font-medium transition-colors ${
+                  categoria === cat.id
+                    ? "bg-amber-800 text-white"
+                    : "bg-white text-neutral-600 ring-1 ring-black/10 hover:bg-neutral-100"
+                }`}
+              >
+                {cat.label}
+              </button>
+            ))}
+          </nav>
+
+          {/* Grilla de productos */}
+          {productosFiltrados.length > 0 ? (
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {productosFiltrados.map((producto) => (
+                <ProductCard
+                  key={producto.id}
+                  image={producto.image}
+                  badge={producto.badge}
+                  title={producto.title}
+                  description={producto.description}
+                  price={producto.price}
+                  onOrder={() => handleOrder(producto)}
+                />
+              ))}
+            </div>
+          ) : (
+            <p className="text-center text-neutral-500">
+              Todavía no hay productos cargados en esta categoría.
+            </p>
+          )}
+        </div>
+      </section>
+    </>
   )
 }
