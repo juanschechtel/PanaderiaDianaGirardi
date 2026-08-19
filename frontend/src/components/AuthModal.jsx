@@ -7,6 +7,7 @@ const configs = { login: loginConfig, register: registerConfig }
 export default function AuthModal({ isOpen, onClose, mode = 'login', onAuthSuccess }) {
   const [serverError, setServerError] = useState('')
   const [serverSuccess, setServerSuccess] = useState('')
+  const startedOnOverlay = useRef(false)
 
   const handleClose = () => {
     setServerError('')
@@ -65,11 +66,9 @@ export default function AuthModal({ isOpen, onClose, mode = 'login', onAuthSucce
     }
   }
 
-  const startedOnOverlay = useRef(false)
-
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+      className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 p-4"
       onMouseDown={(e) => { startedOnOverlay.current = e.target === e.currentTarget }}
       onClick={(e) => { if (startedOnOverlay.current && e.target === e.currentTarget) handleClose(); startedOnOverlay.current = false }}
     >

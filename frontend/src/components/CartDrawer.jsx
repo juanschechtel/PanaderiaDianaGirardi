@@ -1,6 +1,6 @@
 import { useCart } from "./CartContext"
 
-export default function CartDrawer() {
+export default function CartDrawer({ onCheckout }) {
   const {
     items,
     isOpen,
@@ -9,6 +9,11 @@ export default function CartDrawer() {
     updateQuantity,
     totalPrice,
   } = useCart()
+
+  const handleCheckout = () => {
+    setIsOpen(false)
+    onCheckout?.()
+  }
 
   return (
     <>
@@ -24,7 +29,7 @@ export default function CartDrawer() {
       {/* Panel */}
       <aside
         className={`fixed right-0 top-0 z-50 flex h-full w-full max-w-sm flex-col bg-white shadow-xl transition-transform duration-300 ${
-          isOpen ? "translate-x-0" : "translate-x-full"
+          isOpen ? "translate-x-0" : "pointer-events-none translate-x-full"
         }`}
         role="dialog"
         aria-label="Carrito de compras"
@@ -126,7 +131,11 @@ export default function CartDrawer() {
               <span>Total</span>
               <span>${totalPrice.toLocaleString("es-AR")}</span>
             </div>
-            <button className="w-full rounded-full bg-amber-800 py-2.5 text-sm font-medium text-white transition-colors hover:bg-amber-900">
+            <button
+              type="button"
+              onClick={handleCheckout}
+              className="w-full rounded-full bg-amber-800 py-2.5 text-sm font-medium text-white transition-colors hover:bg-amber-900"
+            >
               Finalizar pedido
             </button>
           </div>

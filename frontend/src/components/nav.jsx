@@ -303,7 +303,11 @@ export default function Nav() {
         onAuthSuccess={setUser}
       />
 
-      <CartDrawer />
+      <CartDrawer
+        onCheckout={() => {
+          if (!user) openModal('register')
+        }}
+      />
     </>
   )
 }
