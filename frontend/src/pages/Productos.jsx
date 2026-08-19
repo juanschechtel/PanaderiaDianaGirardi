@@ -1,5 +1,11 @@
 import { useState } from "react"
 import ProductCard from "../components/ProductCard"
+import { useCart } from "../components/CartContext"
+
+/* ------------------------------------------------------------------ */
+/* Datos de los productos                                             */
+/* (más adelante esto puede venir de una API o un archivo separado)   */
+/* ------------------------------------------------------------------ */
 
 const PRODUCTOS = [
   {
@@ -32,7 +38,7 @@ const PRODUCTOS = [
   {
     id: 4,
     categoria: "facturas",
-    image: "/imagenes/torta3.jpeg",
+    image: "/imagenes/torta2.jpeg",
     badge: null,
     title: "Facturas Mixtas",
     description: "Docena surtida: vigilantes, cañoncitos y sacramentos.",
@@ -41,7 +47,7 @@ const PRODUCTOS = [
   {
     id: 5,
     categoria: "tortas",
-    image: "/imagenes/torta2.jpeg",
+    image: "/imagenes/torta3.jpeg",
     badge: "MÁS VENDIDA",
     title: "Torta de Chocolate Belga",
     description: "Mousse de chocolate 70% cacao, ganache artesanal y crocante de almendras.",
@@ -57,12 +63,13 @@ const CATEGORIAS = [
 
 export default function Productos() {
   const [categoria, setCategoria] = useState("panes")
+  const { addItem, setIsOpen } = useCart()
 
   const productosFiltrados = PRODUCTOS.filter((p) => p.categoria === categoria)
 
   const handleOrder = (producto) => {
-    // Acá va la lógica real: WhatsApp, carrito, checkout, etc.
-    console.log("Pedido:", producto.title)
+    addItem(producto)
+    setIsOpen(true) // abre el panel del carrito para dar feedback inmediato
   }
 
   return (
@@ -70,11 +77,9 @@ export default function Productos() {
       {/* Catálogo */}
       <section id="productos" className="w-full px-4 py-16 sm:px-6 sm:py-20" style={{ background: '#F5EDD8' }}>
         <div className="mx-auto max-w-6xl">
-          {/* Título */}
           <div className="mb-4 text-center">
             <h2 className="text-3xl font-semibold tracking-tight text-neutral-900">Nuestros productos</h2>
           </div>
-
           {/* Tabs de categoría */}
           <nav className="mb-10 flex flex-wrap justify-center gap-2 sm:gap-3">
             {CATEGORIAS.map((cat) => (
