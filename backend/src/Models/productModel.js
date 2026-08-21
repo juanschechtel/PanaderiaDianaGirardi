@@ -8,3 +8,13 @@ export const getProducts = async () => {
 
     return rows;
 }
+
+export const addProduct = async (category, name, price, stock, img, description) => {
+
+    const query = "INSERT INTO product (category, name, price, stock, img, description) values (?, ?, ?, ?, ?, ?)"
+
+    const [result] = await pool.query(query, [category, name, price, stock, img, description])
+
+    return result.insertId;
+
+};
