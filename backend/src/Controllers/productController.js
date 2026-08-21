@@ -1,4 +1,4 @@
-import { getProducts, addProduct } from "../Models/productModel.js";
+import { getProducts, addProduct, editProduct } from "../Models/productModel.js";
 
 
 // El GET /dashboard/products
@@ -52,4 +52,27 @@ export const createProduct = async (req, res) => {
         console.error("Error al crear producto: ", error.message);
         return res.status(500).json({ error: "Error interno del servidor al crear el producto." });
     }
+}
+
+export const modifyProduct = async (req, res) => {
+    try {
+
+        const error = validateProduct(req.body);
+        if (error) return res.status(400).json({ message: error });
+
+        const { category, name, price, stock, img, description, id } = req.body;
+
+        const array = editProduct(
+            category.trim(),
+            name.trim(),
+            Number(price),
+            parseInt(stock, 10),
+            img || null,
+            description || null,
+            id
+        )
+    } catch (error) {
+
+    }
+
 }

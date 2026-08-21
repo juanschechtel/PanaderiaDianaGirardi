@@ -18,3 +18,12 @@ export const addProduct = async (category, name, price, stock, img, description)
     return result.insertId;
 
 };
+
+export const editProduct = async (category, name, price, stock, img, description, id) => {
+
+    const query = "UPDATE product set category = ?, name = ?, price = ?, stock = ?, img = ?, description = ? WHERE product_id = ?"
+
+    const [result] = await pool.query(query, [category, name, price, stock, img || null, description || null, id])
+
+    return result;
+}
