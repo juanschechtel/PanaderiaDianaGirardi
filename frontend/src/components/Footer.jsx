@@ -37,7 +37,7 @@ export default function Footer() {
             </li>
             <li>
               <a
-                href="#"
+                href="https://www.instagram.com/diana_girardi"
                 target="_blank"
                 rel="noreferrer"
                 className="flex items-center gap-3 text-sm text-stone-300 transition-colors hover:text-white"
