@@ -20,3 +20,11 @@ export const verifyToken = (req, res, next) => {
         return res.status(403).json({ message: "Token inválido o expirado." });
     }
 };
+
+export const checkAdmin = (req, res, next) => {
+
+    if (!req.user || req.user.role !== 'admin') {
+        return res.status(403).json({ message: "Acceso denegado" });
+    }
+    next();
+}
