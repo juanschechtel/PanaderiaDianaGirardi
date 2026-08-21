@@ -16,18 +16,28 @@ function stockBadgeClass(stock) {
 export default function AdminProductos() {
   const [productos, setProductos] = useState([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState("")
   const [busqueda, setBusqueda] = useState("")
   const [modalAbierto, setModalAbierto] = useState(false)
 
   useEffect(() => {
     let cancelado = false
     setLoading(true)
-    getProductosAdmin().then((data) => {
-      if (!cancelado) {
-        setProductos(data)
-        setLoading(false)
-      }
-    })
+    setError("")
+    getProductosAdmin()
+      .then((data) => {
+        if (!cancelado) {
+          setProductos(data)
+          setLoading(false)
+        }
+      })
+      .catch((err) => {
+        if (!cancelado) {
+          setError(err.message || "No se pudieron cargar los productos.")
+          setProductos([])
+          setLoading(false)
+        }
+      })
     return () => {
       cancelado = true
     }
@@ -41,16 +51,25 @@ export default function AdminProductos() {
 
   const handleDelete = async (id, nombre) => {
     if (!window.confirm(`¿Eliminar "${nombre}"? Esta acción no se puede deshacer.`)) return
-    await deleteProductoAdmin(id)
-    setProductos((prev) => prev.filter((p) => p.id !== id))
+    try {
+      await deleteProductoAdmin(id)
+      setProductos((prev) => prev.filter((p) => p.id !== id))
+    } catch (err) {
+      window.alert(err.message)
+    }
   }
 
   const handleAgregar = () => setModalAbierto(true)
 
   const handleSubmitNuevoProducto = async (datosProducto) => {
-    const nuevo = await addProductoAdmin(datosProducto)
-    setProductos((prev) => [nuevo, ...prev])
-    setModalAbierto(false)
+    try {
+      const nuevo = await addProductoAdmin(datosProducto)
+      setProductos((prev) => [nuevo, ...prev])
+      setModalAbierto(false)
+    } catch (err) {
+      window.alert(err.message || "No se pudo crear el producto.")
+      throw err
+    }
   }
 
   const handleEditar = (nombre) => {
@@ -72,6 +91,12 @@ export default function AdminProductos() {
           AGREGAR PRODUCTO
         </button>
       </div>
+
+      {error && (
+        <p className="mt-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700 ring-1 ring-red-200">
+          {error}
+        </p>
+      )}
 
       {/* Búsqueda */}
       <div className="relative mt-6 max-w-md">

@@ -71,7 +71,7 @@ export default function Nav() {
   const isSolid = scrolled || menuOpen
 
   const navBtnClass =
-    'text-sm font-medium px-3 py-2 sm:px-4 rounded-lg transition-colors text-center whitespace-nowrap'
+    'cursor-pointer text-sm font-medium px-3 py-2 sm:px-4 rounded-lg transition-colors text-center whitespace-nowrap'
 
   return (
     <>
@@ -111,7 +111,7 @@ export default function Nav() {
               <a
                 key={link.href}
                 href={link.href}
-                className={`transition-colors ${
+                className={`cursor-pointer transition-colors ${
                   isSolid ? 'hover:text-[#7B2D3E]' : 'hover:text-amber-300'
                 }`}
               >
@@ -121,23 +121,6 @@ export default function Nav() {
           </div>
 
           <div className="flex items-center gap-2 sm:gap-3">
-            {/* Instagram */}
-            <a
-              href="#"
-              aria-label="Instagram"
-              className={`hidden h-9 w-9 items-center justify-center rounded-full transition-colors sm:flex ${
-                isSolid
-                  ? 'text-gray-700 hover:bg-black/5'
-                  : 'text-white hover:bg-white/10'
-              }`}
-            >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="h-5 w-5">
-                <rect x="2" y="2" width="20" height="20" rx="5" />
-                <circle cx="12" cy="12" r="4" />
-                <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" />
-              </svg>
-            </a>
-
             {/* Carrito: visible siempre, mobile y desktop */}
             <CartButton
               className={
@@ -172,7 +155,7 @@ export default function Nav() {
                 <>
                   <button
                     onClick={() => openModal('login')}
-                    className={`flex items-center gap-1.5 rounded-lg border px-4 py-2 text-sm font-semibold tracking-wide transition-colors ${
+                    className={`flex cursor-pointer items-center gap-1.5 rounded-lg border px-4 py-2 text-sm font-semibold tracking-wide transition-colors ${
                       isSolid
                         ? 'border-black/15 text-gray-800 hover:bg-black/5'
                         : 'border-white/40 text-white hover:bg-white/10'
@@ -201,7 +184,7 @@ export default function Nav() {
               {/* Pedir ahora */}
               <a
                 href="#productos"
-                className="flex items-center gap-1.5 rounded-lg px-4 py-2 text-sm font-semibold tracking-wide text-white transition-colors"
+                className="flex cursor-pointer items-center gap-1.5 rounded-lg px-4 py-2 text-sm font-semibold tracking-wide text-white transition-colors"
                 style={{ backgroundColor: BRAND }}
                 onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#631f2d')}
                 onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = BRAND)}
@@ -217,7 +200,7 @@ export default function Nav() {
 
             <button
               type="button"
-              className={`inline-flex items-center justify-center rounded-lg p-2 transition-colors md:hidden ${
+              className={`inline-flex cursor-pointer items-center justify-center rounded-lg p-2 transition-colors md:hidden ${
                 isSolid
                   ? 'text-gray-700 hover:bg-black/5'
                   : 'text-white hover:bg-white/10'
@@ -247,7 +230,7 @@ export default function Nav() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setMenuOpen(false)}
-                  className="rounded-lg px-3 py-2.5 text-sm text-gray-700 hover:bg-black/5 hover:text-[#7B2D3E]"
+                  className="cursor-pointer rounded-lg px-3 py-2.5 text-sm text-gray-700 hover:bg-black/5 hover:text-[#7B2D3E]"
                 >
                   {link.label}
                 </a>
@@ -255,7 +238,7 @@ export default function Nav() {
               <a
                 href="#productos"
                 onClick={() => setMenuOpen(false)}
-                className="mt-2 rounded-lg px-3 py-2.5 text-center text-sm font-semibold text-white"
+                className="mt-2 cursor-pointer rounded-lg px-3 py-2.5 text-center text-sm font-semibold text-white"
                 style={{ backgroundColor: BRAND }}
               >
                 Pedir ahora

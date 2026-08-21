@@ -1,62 +1,71 @@
-/* ------------------------------------------------------------------ */
-/* productosAdminService                                               */
-/*                                                                      */
-/* NOTA: esta lista es independiente de src/data/productos.js (la del  */
-/* catálogo público). Cuando exista backend, ambas deberían venir del   */
-/* mismo lugar (una tabla "productos" con categoría, precio y stock).   */
-/* Por ahora es mock, con la forma que va a tener la respuesta real.    */
-/* ------------------------------------------------------------------ */
-
-const SIMULATED_DELAY_MS = 400
-const delay = (data) =>
-  new Promise((resolve) => setTimeout(() => resolve(data), SIMULATED_DELAY_MS))
+const API_BASE_URL = "http://localhost:3000"
 
 export const CATEGORIAS_ADMIN = ["Postres", "Desayunos"]
 
-let PRODUCTOS_ADMIN = [
-  { id: 1, image: "/imagenes/torta3.jpeg", nombre: "Torta de Chocolate Belga", categoria: "Postres", precio: 4800, stock: 8, etiqueta: "Más vendida" },
-  { id: 2, image: "/imagenes/torta1.jpeg", nombre: "Tarta de Frutas de Estación", categoria: "Postres", precio: 3600, stock: 5, etiqueta: null },
-  { id: 3, image: "/imagenes/torta2.jpeg", nombre: "Selección de Macarons", categoria: "Postres", precio: 2900, stock: 15, etiqueta: "Favorito" },
-  { id: 4, image: "/imagenes/torta1.jpeg", nombre: "Éclair de Praliné", categoria: "Postres", precio: 890, stock: 20, etiqueta: null },
-  { id: 5, image: "/imagenes/torta3.jpeg", nombre: "Cheesecake de Frutos Rojos", categoria: "Postres", precio: 4200, stock: 3, etiqueta: "Sin TACC" },
-  { id: 6, image: "/imagenes/torta2.jpeg", nombre: "Mille-Feuille de Vainilla", categoria: "Postres", precio: 1200, stock: 10, etiqueta: null },
-  { id: 7, image: "/imagenes/pan.jpg", nombre: "Caja Girardi Clásica", categoria: "Desayunos", precio: 5400, stock: 12, etiqueta: "Para 2 personas" },
-  { id: 8, image: "/imagenes/pan.jpg", nombre: "Caja Croissant Premium", categoria: "Desayunos", precio: 6800, stock: 8, etiqueta: "Especial" },
-  { id: 9, image: "/imagenes/pan.jpg", nombre: "Desayuno Vegano", categoria: "Desayunos", precio: 4900, stock: 7, etiqueta: "Vegano" },
-  { id: 10, image: "/imagenes/torta2.jpeg", nombre: "Brownie con Nuez", categoria: "Postres", precio: 1500, stock: 2, etiqueta: null },
-]
+function authHeaders() {
+  const token = localStorage.getItem("token")
+  return {
+    "Content-Type": "application/json",
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+  }
+}
 
-/**
- * Futuro endpoint real: GET /api/productos
- */
+async function parseError(res) {
+  const data = await res.json().catch(() => ({}))
+  throw new Error(data.message || data.error || `Error ${res.status}`)
+}
+
+function mapProductoFromApi(p) {
+  return {
+    id: p.id ?? p.id_product ?? p.productId,
+    nombre: p.name ?? p.nombre ?? "",
+    categoria: p.category ?? p.categoria ?? "",
+    precio: Number(p.price ?? p.precio ?? 0),
+    stock: Number(p.stock ?? 0),
+    image: p.img ?? p.image ?? "",
+    descripcion: p.description ?? p.descripcion ?? "",
+    etiqueta: p.etiqueta ?? null,
+  }
+}
+
+function mapProductoToApi(producto) {
+  return {
+    name: producto.nombre,
+    category: producto.categoria,
+    price: Number(producto.precio),
+    stock: Number(producto.stock),
+    img: producto.image || null,
+    description: producto.descripcion || null,
+  }
+}
+
+/** GET /dashbonard/products (ruta actual del backend) */
 export async function getProductosAdmin() {
-  // TODO backend: reemplazar por
-  // const res = await fetch(`${API_BASE_URL}/productos`)
-  // return res.json()
-  return delay([...PRODUCTOS_ADMIN])
+  const res = await fetch(`${API_BASE_URL}/dashbonard/products`, {
+    headers: authHeaders(),
+  })
+  if (!res.ok) await parseError(res)
+  const data = await res.json()
+  const lista = Array.isArray(data) ? data : data.products ?? data.productos ?? []
+  return lista.map(mapProductoFromApi)
 }
 
-/**
- * Futuro endpoint real: DELETE /api/productos/:id
- */
-export async function deleteProductoAdmin(id) {
-  // TODO backend: reemplazar por
-  // await fetch(`${API_BASE_URL}/productos/${id}`, { method: "DELETE" })
-  PRODUCTOS_ADMIN = PRODUCTOS_ADMIN.filter((p) => p.id !== id)
-  return delay({ ok: true })
-}
-
-/**
- * Futuro endpoint real: POST /api/productos
- * (multipart/form-data si la imagen se sube como archivo, o JSON si es una URL)
- */
+/** POST /dashboard/products */
 export async function addProductoAdmin(producto) {
-  // TODO backend: reemplazar por
-  // const formData = new FormData()
-  // Object.entries(producto).forEach(([key, value]) => formData.append(key, value))
-  // const res = await fetch(`${API_BASE_URL}/productos`, { method: "POST", body: formData })
-  // return res.json()
-  const nuevo = { id: Date.now(), ...producto }
-  PRODUCTOS_ADMIN = [nuevo, ...PRODUCTOS_ADMIN]
-  return delay(nuevo)
+  const res = await fetch(`${API_BASE_URL}/dashboard/products`, {
+    method: "POST",
+    headers: authHeaders(),
+    body: JSON.stringify(mapProductoToApi(producto)),
+  })
+  if (!res.ok) await parseError(res)
+  const data = await res.json()
+  return mapProductoFromApi({
+    ...mapProductoToApi(producto),
+    id: data.productId,
+    etiqueta: producto.etiqueta ?? null,
+  })
+}
+
+export async function deleteProductoAdmin() {
+  throw new Error("El backend todavía no tiene endpoint para eliminar productos.")
 }

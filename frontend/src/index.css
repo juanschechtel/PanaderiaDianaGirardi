@@ -10,6 +10,10 @@ body {
   overflow-x: clip;
 }
 
+button {
+  cursor: pointer;
+}
+
 :root {
   --text: #6b6375;
   --text-h: #08060d;

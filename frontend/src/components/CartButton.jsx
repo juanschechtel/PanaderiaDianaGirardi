@@ -9,7 +9,7 @@ export default function CartButton({
     <button
       onClick={() => setIsOpen(true)}
       aria-label="Abrir carrito"
-      className={`relative flex h-10 w-10 items-center justify-center rounded-full transition-colors ${className}`}
+      className={`relative flex h-10 w-10 cursor-pointer items-center justify-center rounded-full transition-colors ${className}`}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
