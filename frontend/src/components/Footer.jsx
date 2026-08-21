@@ -26,7 +26,7 @@ export default function Footer() {
           <ul className="mt-5 flex flex-col gap-3.5">
             <li>
               <a
-                href="https://wa.me/5490000000000"
+                href="https://wa.me/5492983418068"
                 target="_blank"
                 rel="noreferrer"
                 className="flex items-center gap-3 text-sm text-stone-300 transition-colors hover:text-white"
@@ -48,7 +48,7 @@ export default function Footer() {
             </li>
             <li className="flex items-center gap-3 text-sm text-stone-300">
               <IconPin className="h-4 w-4 shrink-0 text-amber-500" />
-              Zona Norte y Oeste, Buenos Aires
+              Tres Arroyos, Buenos Aires
             </li>
           </ul>
         </div>
@@ -60,8 +60,9 @@ export default function Footer() {
           </p>
           <ul className="mt-5 flex flex-col gap-3.5">
             <li className="flex items-center justify-between gap-4 text-sm">
-              <span className="text-stone-300">Lunes a Viernes</span>
-              <span className="font-medium text-white">9:00 – 19:00</span>
+              <span className="text-stone-300">Martes a Viernes</span>
+              <span className="font-medium text-white">9:30 – 13:00</span>
+              <span className="font-medium text-white">16:30 – 21:30</span>
             </li>
             <li className="flex items-center justify-between gap-4 text-sm">
               <span className="text-stone-300">Sábados</span>

@@ -1,4 +1,4 @@
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { CATEGORIAS_ADMIN } from "../services/productosAdminService"
 
 const initialForm = {
@@ -10,13 +10,41 @@ const initialForm = {
   etiqueta: "",
 }
 
-export default function ProductoFormModal({ isOpen, onClose, onSubmit }) {
+export default function ProductoFormModal({ isOpen, onClose, onSubmit, producto = null }) {
+  const esEdicion = Boolean(producto)
+
   const [modoImagen, setModoImagen] = useState("archivo") // "archivo" | "url"
   const [imagenPreview, setImagenPreview] = useState(null)
   const [imagenUrl, setImagenUrl] = useState("")
   const [form, setForm] = useState(initialForm)
   const [enviando, setEnviando] = useState(false)
   const fileInputRef = useRef(null)
+
+  // Precarga el formulario con los datos del producto cuando se abre en modo edición
+  useEffect(() => {
+    if (!isOpen) return
+
+    if (producto) {
+      setForm({
+        nombre: producto.nombre ?? "",
+        descripcion: producto.descripcion ?? "",
+        precio: producto.precio ?? "",
+        stock: producto.stock ?? "",
+        categoria: producto.categoria ?? CATEGORIAS_ADMIN[0],
+        etiqueta: producto.etiqueta ?? "",
+      })
+
+      const esUrl = typeof producto.image === "string" && /^https?:\/\//.test(producto.image)
+      setModoImagen(esUrl ? "url" : "archivo")
+      setImagenUrl(esUrl ? producto.image : "")
+      setImagenPreview(esUrl ? null : producto.image ?? null)
+    } else {
+      setForm(initialForm)
+      setImagenPreview(null)
+      setImagenUrl("")
+      setModoImagen("archivo")
+    }
+  }, [isOpen, producto])
 
   if (!isOpen) return null
 
@@ -80,7 +108,9 @@ export default function ProductoFormModal({ isOpen, onClose, onSubmit }) {
       <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl bg-[#FBF6E9] shadow-xl">
         {/* Header */}
         <div className="flex items-center justify-between border-b border-black/10 px-6 py-5">
-          <h2 className="font-serif text-2xl text-neutral-900">Agregar producto</h2>
+          <h2 className="font-serif text-2xl text-neutral-900">
+            {esEdicion ? "Editar producto" : "Agregar producto"}
+          </h2>
           <button
             onClick={handleClose}
             aria-label="Cerrar"
@@ -259,7 +289,13 @@ export default function ProductoFormModal({ isOpen, onClose, onSubmit }) {
               disabled={enviando}
               className="flex-1 rounded-lg bg-[#7B2D3E] py-3 text-sm font-semibold tracking-wide text-white transition-colors hover:bg-[#631f2d] disabled:opacity-60"
             >
-              {enviando ? "Agregando..." : "AGREGAR PRODUCTO"}
+              {enviando
+                ? esEdicion
+                  ? "Guardando..."
+                  : "Agregando..."
+                : esEdicion
+                ? "GUARDAR CAMBIOS"
+                : "AGREGAR PRODUCTO"}
             </button>
             <button
               type="button"

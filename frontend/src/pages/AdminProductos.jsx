@@ -5,6 +5,7 @@ import {
   getProductosAdmin,
   deleteProductoAdmin,
   addProductoAdmin,
+  updateProductoAdmin,
 } from "../services/productosAdminService"
 
 function stockBadgeClass(stock) {
@@ -19,6 +20,7 @@ export default function AdminProductos() {
   const [error, setError] = useState("")
   const [busqueda, setBusqueda] = useState("")
   const [modalAbierto, setModalAbierto] = useState(false)
+  const [productoAEditar, setProductoAEditar] = useState(null)
 
   useEffect(() => {
     let cancelado = false
@@ -59,22 +61,33 @@ export default function AdminProductos() {
     }
   }
 
-  const handleAgregar = () => setModalAbierto(true)
+  const handleAgregar = () => {
+    setProductoAEditar(null)
+    setModalAbierto(true)
+  }
 
-  const handleSubmitNuevoProducto = async (datosProducto) => {
+  const handleSubmitProducto = async (datosProducto) => {
     try {
-      const nuevo = await addProductoAdmin(datosProducto)
-      setProductos((prev) => [nuevo, ...prev])
+      if (productoAEditar) {
+        const actualizado = await updateProductoAdmin(productoAEditar.id, datosProducto)
+        setProductos((prev) =>
+          prev.map((p) => (p.id === productoAEditar.id ? actualizado : p))
+        )
+      } else {
+        const nuevo = await addProductoAdmin(datosProducto)
+        setProductos((prev) => [nuevo, ...prev])
+      }
       setModalAbierto(false)
+      setProductoAEditar(null)
     } catch (err) {
-      window.alert(err.message || "No se pudo crear el producto.")
+      window.alert(err.message || "No se pudo guardar el producto.")
       throw err
     }
   }
 
-  const handleEditar = (nombre) => {
-    // Placeholder: acá iría un modal/formulario de edición.
-    window.alert(`Editar "${nombre}" — pendiente de implementar.`)
+  const handleEditar = (producto) => {
+    setProductoAEditar(producto)
+    setModalAbierto(true)
   }
 
   return (
@@ -164,7 +177,7 @@ export default function AdminProductos() {
                   <td className="px-6 py-3">
                     <div className="flex items-center gap-3">
                       <button
-                        onClick={() => handleEditar(p.nombre)}
+                        onClick={() => handleEditar(p)}
                         aria-label={`Editar ${p.nombre}`}
                         className="text-neutral-500 hover:text-neutral-800"
                       >
@@ -188,8 +201,12 @@ export default function AdminProductos() {
 
       <ProductoFormModal
         isOpen={modalAbierto}
-        onClose={() => setModalAbierto(false)}
-        onSubmit={handleSubmitNuevoProducto}
+        onClose={() => {
+          setModalAbierto(false)
+          setProductoAEditar(null)
+        }}
+        onSubmit={handleSubmitProducto}
+        producto={productoAEditar}
       />
     </AdminLayout>
   )

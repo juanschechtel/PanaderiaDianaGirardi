@@ -66,6 +66,21 @@ export async function addProductoAdmin(producto) {
   })
 }
 
+/** PUT /dashboard/products/:id */
+export async function updateProductoAdmin(id, producto) {
+  const res = await fetch(`${API_BASE_URL}/dashboard/products/${id}`, {
+    method: "PUT",
+    headers: authHeaders(),
+    body: JSON.stringify(mapProductoToApi(producto)),
+  })
+  if (!res.ok) await parseError(res)
+  return mapProductoFromApi({
+    ...mapProductoToApi(producto),
+    id,
+    etiqueta: producto.etiqueta ?? null,
+  })
+}
+
 export async function deleteProductoAdmin() {
   throw new Error("El backend todavía no tiene endpoint para eliminar productos.")
 }
